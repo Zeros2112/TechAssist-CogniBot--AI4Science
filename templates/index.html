@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatbot</title>
+    <style>
+      /* Add your CSS styles here */
+      #chat-container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+      }
+
+      #chat-display {
+        margin-bottom: 10px;
+      }
+
+      #user-input {
+        width: 80%;
+        padding: 8px;
+        box-sizing: border-box;
+      }
+
+      #send-btn {
+        padding: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chat-container">
+      <div id="chat-display"></div>
+      <input type="text" id="user-input" placeholder="Type your message..." />
+      <button id="send-btn">Send</button>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const chatDisplay = document.getElementById("chat-display");
+        const userInput = document.getElementById("user-input");
+        const sendBtn = document.getElementById("send-btn");
+
+        sendBtn.addEventListener("click", function () {
+          const userMessage = userInput.value.trim();
+          if (userMessage !== "") {
+            fetch("/chat", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: `user_input=${encodeURIComponent(userMessage)}`,
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                chatDisplay.innerHTML += `<div class="user-message">${data.user_input}</div>`;
+                chatDisplay.innerHTML += `<div class="bot-message">${data.assistant_response}</div>`;
+                userInput.value = "";
+              });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
