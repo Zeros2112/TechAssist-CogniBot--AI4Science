@@ -1,4 +1,4 @@
-# Technical Support Chat Assistant
+# TechAssist CogniBot @AI4Science
 
 ## Description
 
